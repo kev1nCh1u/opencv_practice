@@ -31,7 +31,7 @@ imgResult = cap.copy()
 # ret, binary = cv2.threshold(gray,127,255,cv2.THRESH_BINARY)
 contours, hierarchy = cv2.findContours(
     mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-cv2.drawContours(imgResult, contours, -1, (0, 0, 255), 1)
+cv2.drawContours(imgResult, contours, -1, (0, 255, 0), 1)
 
 # cv2.imshow('gray',gray)
 # cv2.imshow('imgResult',imgResult)
@@ -39,23 +39,26 @@ cv2.drawContours(imgResult, contours, -1, (0, 0, 255), 1)
 ###################################################################################
 # find center
 ###################################################################################
-print(contours[0])
-points = []
+points = np.zeros((3, 1, 2), np.int32)
+i = 0
 for c in contours:
+
     # calculate moments for each contour
     M = cv2.moments(c)
     cX = int(M["m10"] / M["m00"])
     cY = int(M["m01"] / M["m00"])
 
-    point = [cX, cY]
-    points.append(point)
+    point = np.array([cX, cY], np.int32)
+    points[i][0] = point
 
     # calculate x,y coordinate of center
-    cv2.circle(imgResult, (cX, cY), 2, (0, 0, 255), -1)
-    cv2.putText(imgResult, 'x:'+str(cX)+' y:'+str(cY), (cX - 25,
-                cY - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 0), 1)
+    cv2.circle(imgResult, (cX, cY), 2, (0, 255, 0), -1)
+    xy = 'x:' + str(cX) + ' y:' + str(cY)
+    cv2.putText(imgResult, xy, (cX + 2, cY + 2),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 0), 1)
 
-print(points)
+    i += 1
+
 cv2.imshow('imgResult', imgResult)
 
 ###################################################################################
@@ -67,8 +70,9 @@ cY = int(M["m01"] / M["m00"])
 
 # calculate x,y coordinate of center
 cv2.circle(imgResult, (cX, cY), 2, (0, 0, 255), -1)
-cv2.putText(imgResult, 'x:'+str(cX)+' y:'+str(cY), (cX - 25,
-            cY - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 0), 1)
+xy = 'x:' + str(cX) + ' y:' + str(cY)
+cv2.putText(imgResult, xy, (cX + 2, cY + 2),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 0), 1)
 
 cv2.imshow('imgResult', imgResult)
 
