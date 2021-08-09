@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 # cap = cv2.VideoCapture(0)
-cap = cv2.imread("img\ir_led_3.bmp")
+cap = cv2.imread("img\ir_led_4.bmp")
 
 ###################################################################################
 # HSV mask
@@ -54,7 +54,7 @@ cv2.drawContours(imgResult, contours, -1, (0, 255, 0), 1)
 # find center
 ###################################################################################
 # kevin value
-points = np.zeros((3, 1, 2), np.int32)
+points = np.zeros((4, 1, 2), np.int32)
 i = 0
 
 for c in contours:
