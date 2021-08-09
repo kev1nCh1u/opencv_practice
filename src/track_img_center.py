@@ -53,14 +53,13 @@ for c in contours:
     # kevin save point
     point = np.array([cX, cY], np.int32)
     points[i][0] = point
+    i += 1
 
     # calculate x,y coordinate of center
     cv2.circle(imgResult, (cX, cY), 2, (0, 255, 0), -1)
     xy = 'x:' + str(cX) + ' y:' + str(cY)
     cv2.putText(imgResult, xy, (cX + 2, cY + 2),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 0), 1)
-
-    i += 1
 
 cv2.imshow('imgResult', imgResult)
 
