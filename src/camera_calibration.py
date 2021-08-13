@@ -4,6 +4,9 @@ import glob
 
 print(cv.__version__)
 
+########################################################################################
+# findChessboardCorners
+########################################################################################
 # termination criteria
 criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
@@ -33,23 +36,35 @@ for fname in images:
 cv.destroyAllWindows()
 print('find images:',len(imgpoints))
 
+########################################################################################
+# calibration
+########################################################################################
 ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 print('calibrateCamera:')
 
-mean_error = 0
-for i in range(len(objpoints)):
-    imgpoints2, _ = cv.projectPoints(objpoints[i], rvecs[i], tvecs[i], mtx, dist)
-    error = cv.norm(imgpoints[i], imgpoints2, cv.NORM_L2)/len(imgpoints2)
-    mean_error += error
-print( "total error: {}".format(mean_error/len(objpoints)) )
+########################################################################################
+# calibration mean_error
+########################################################################################
+# mean_error = 0
+# for i in range(len(objpoints)):
+#     imgpoints2, _ = cv.projectPoints(objpoints[i], rvecs[i], tvecs[i], mtx, dist)
+#     error = cv.norm(imgpoints[i], imgpoints2, cv.NORM_L2)/len(imgpoints2)
+#     mean_error += error
+# print( "total error: {}".format(mean_error/len(objpoints)) )
 
+########################################################################################
+# draw xyz
+########################################################################################
 def draw(img, corners, imgpts):
-    corner = tuple(corners[0].ravel())
-    img = cv.line(img, corner, tuple(imgpts[0].ravel()), (255,0,0), 5)
-    img = cv.line(img, corner, tuple(imgpts[1].ravel()), (0,255,0), 5)
-    img = cv.line(img, corner, tuple(imgpts[2].ravel()), (0,0,255), 5)
+    corner = tuple(corners[0].astype(np.int32).ravel())
+    img = cv.line(img, corner, tuple(imgpts[0].astype(np.int32).ravel()), (255,0,0), 5)
+    img = cv.line(img, corner, tuple(imgpts[1].astype(np.int32).ravel()), (0,255,0), 5)
+    img = cv.line(img, corner, tuple(imgpts[2].astype(np.int32).ravel()), (0,0,255), 5)
     return img
 
+########################################################################################
+# pnp pose
+########################################################################################
 # criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 # objp = np.zeros((6*9,3), np.float32)
 # objp[:,:2] = np.mgrid[0:9,0:6].T.reshape(-1,2)
@@ -65,6 +80,9 @@ for fname in glob.glob('img/calibration/WIN_20210810_09_40_14_Pro.jpg'):
         ret,rvecs, tvecs = cv.solvePnP(objp, corners2, mtx, dist)
         # project 3D points to image plane
         imgpts, jac = cv.projectPoints(axis, rvecs, tvecs, mtx, dist)
+        print('corners2 type:',type(corners2))
+        print('corners2 shape:',corners2.shape)
+        print('corners2:',corners2[0].astype(np.int32).ravel())
         img = draw(img,corners2,imgpts)
         cv.imshow('img',img)
         k = cv.waitKey(0) & 0xFF
