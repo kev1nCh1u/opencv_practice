@@ -1,6 +1,24 @@
 import cv2
 import numpy as np
+import yaml
 # from google.colab.patches import cv2_imshow 
+
+########################################################################################
+# load calibration file 
+########################################################################################
+with open("calibration_matrix.yaml", "r") as f:
+    data = yaml.safe_load(f)
+
+mtx =  data['camera_matrix']
+dist = data['dist_coeff']
+
+mtx = np.array(mtx)
+dist = np.array(dist)
+
+print('\n camera_matrix: \n', mtx)
+print('\n dist_coeff: \n', dist)
+
+camera_matrix = mtx
 
 ####################################################################################
 #
@@ -78,4 +96,5 @@ cv2.line(img, point1, point2, (255,255,255), 2)
  
 # Display image
  
-cv2_imshow(img)
+# cv2_imshow(img)
+cv2.imshow(img)

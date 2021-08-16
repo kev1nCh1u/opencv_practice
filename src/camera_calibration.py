@@ -59,6 +59,9 @@ print("total error: {}".format(mean_error/len(objpoints)))
 ########################################################################################
 # transform the matrix and distortion coefficients to writable lists
 ########################################################################################
+print('\n mtx: \n', mtx)
+print('\n dist: \n', dist)
+
 data = {'camera_matrix': np.asarray(mtx).tolist(),
         'dist_coeff': np.asarray(dist).tolist()}
 
