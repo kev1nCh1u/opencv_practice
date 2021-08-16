@@ -1,6 +1,7 @@
 import numpy as np
 import cv2 as cv2
 import glob
+import yaml
 
 print(cv2.__version__)
 
@@ -54,3 +55,15 @@ for i in range(len(objpoints)):
     error = cv2.norm(imgpoints[i], imgpoints2, cv2.NORM_L2)/len(imgpoints2)
     mean_error += error
 print("total error: {}".format(mean_error/len(objpoints)))
+
+########################################################################################
+# transform the matrix and distortion coefficients to writable lists
+########################################################################################
+data = {'camera_matrix': np.asarray(mtx).tolist(),
+        'dist_coeff': np.asarray(dist).tolist()}
+
+########################################################################################
+# and save it to a file
+########################################################################################
+with open("calibration_matrix.yaml", "w") as f:
+    yaml.dump(data, f)

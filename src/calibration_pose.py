@@ -1,9 +1,20 @@
 import numpy as np
 import cv2 as cv2
 import glob
+import yaml
 
 print(cv2.__version__)
 
+########################################################################################
+# and save it to a file
+########################################################################################
+with open("calibration_matrix.yaml", "r") as f:
+    data = yaml.safe_load(f)
+
+print('\n camera_matrix: \n', data['camera_matrix'])
+print('\n dist_coeff: \n', data['dist_coeff'])
+
+exit()
 ########################################################################################
 # findChessboardCorners
 ########################################################################################
