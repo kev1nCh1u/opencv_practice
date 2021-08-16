@@ -82,6 +82,7 @@ for fname in glob.glob('img/calibration/WIN_20210810_09_40_14_Pro.jpg'):
         imgpts, jac = cv2.projectPoints(axis, rvecs, tvecs, mtx, dist)
         print('corners2 type:',type(corners2))
         print('corners2 shape:',corners2.shape)
+        print('corners2 type:',type(corners2[0]))
         print('corners2:',corners2[0].astype(np.int32).ravel())
         img = draw(img,corners2,imgpts)
         cv2.imshow('img',img)
