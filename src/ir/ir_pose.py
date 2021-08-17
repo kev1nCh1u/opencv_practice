@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import yaml
+import glob
 
 print(cv2.__version__)
 
@@ -23,27 +24,7 @@ print('\n camera_matrix: \n', mtx)
 print('\n dist_coeff: \n', dist)
 
 ###################################################################################
-# HSV mask
-###################################################################################
-# # Take each frame
-# # _, frame = cap.read()
-# frame = cap.copy()
-# # Convert BGR to HSV
-# hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-# # define range of blue color in HSV
-# lower_blue = np.array([92,134,69])
-# upper_blue = np.array([131,255,255])
-# # Threshold the HSV image to get only blue colors
-# mask = cv2.inRange(hsv, lower_blue, upper_blue)
-# # Bitwise-AND mask and original image
-# res = cv2.bitwise_and(frame,frame, mask= mask)
-
-# # cv2.imshow('frame',frame)
-# # cv2.imshow('mask',mask)
-# # cv2.imshow('res',res)
-
-###################################################################################
-# HSV mask
+# threshold mask
 ###################################################################################
 img = cap.copy()
 
