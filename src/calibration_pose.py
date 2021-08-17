@@ -49,10 +49,16 @@ for fname in glob.glob('img/calibration/WIN_20210810_09_40_14_Pro.jpg'):
         ret,rvecs, tvecs = cv2.solvePnP(objp, corners2, mtx, dist)
         # project 3D points to image plane
         imgpts, jac = cv2.projectPoints(axis, rvecs, tvecs, mtx, dist)
+
+        print('\n corners2:')
         print('corners2 type:',type(corners2))
         print('corners2 shape:',corners2.shape)
-        print('corners2 type:',type(corners2[0]))
-        print('corners2:',corners2[0].astype(np.int32).ravel())
+        print(corners2)
+        print()
+
+        print('\n objp: \n', objp)
+        print()
+
         img = draw(img,corners2,imgpts)
         cv2.imshow('img',img)
         k = cv2.waitKey(0) & 0xFF
