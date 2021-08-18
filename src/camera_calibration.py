@@ -1,9 +1,14 @@
+########################################################################################
+# camera_calibration
+# by KevinChiu
+########################################################################################
+
 import numpy as np
 import cv2 as cv2
 import glob
 import yaml
 
-print(cv2.__version__)
+print('\n opencv version:', cv2.__version__)
 
 ########################################################################################
 # findChessboardCorners
@@ -17,7 +22,7 @@ objp[:, :2] = np.mgrid[0:9, 0:6].T.reshape(-1, 2)
 objpoints = []  # 3d point in real world space
 imgpoints = []  # 2d points in image plane.
 images = glob.glob('img/calibration/*.jpg')
-print('input images:', len(images))
+print('\n input images:', len(images))
 for fname in images:
     img = cv2.imread(fname)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -30,20 +35,25 @@ for fname in images:
         objpoints.append(objp)
         corners2 = cv2.cornerSubPix(
             gray, corners, (11, 11), (-1, -1), criteria)
+        # corners2 = corners
+        # print('\n corners \n', corners2)
+
         imgpoints.append(corners)
         # Draw and display the corners
         cv2.drawChessboardCorners(img, (9, 6), corners2, ret)
-        # cv2.imshow('img', img)
-        # cv2.waitKey(0)
+        cv2.imshow('img', img)
+        cv2.waitKey(100)
 cv2.destroyAllWindows()
-print('find images:', len(imgpoints))
+print('\n find images:', len(imgpoints))
 
 ########################################################################################
 # calibration
 ########################################################################################
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(
     objpoints, imgpoints, gray.shape[::-1], None, None)
-print('calibrateCamera:')
+print('\n mtx: \n', mtx)
+print('\n dist: \n', dist)
+print()
 
 ########################################################################################
 # calibration mean_error
@@ -54,19 +64,17 @@ for i in range(len(objpoints)):
         objpoints[i], rvecs[i], tvecs[i], mtx, dist)
     error = cv2.norm(imgpoints[i], imgpoints2, cv2.NORM_L2)/len(imgpoints2)
     mean_error += error
-print("total error: {}".format(mean_error/len(objpoints)))
+print("total error: {}\n".format(mean_error/len(objpoints)))
 
 ########################################################################################
 # transform the matrix and distortion coefficients to writable lists
 ########################################################################################
-print('\n mtx: \n', mtx)
-print('\n dist: \n', dist)
-
 data = {'camera_matrix': np.asarray(mtx).tolist(),
         'dist_coeff': np.asarray(dist).tolist()}
 
 ########################################################################################
 # and save it to a file
 ########################################################################################
+print('save to calibration_matrix.yaml\n')
 with open("calibration_matrix.yaml", "w") as f:
     yaml.dump(data, f)
