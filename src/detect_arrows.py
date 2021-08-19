@@ -36,6 +36,17 @@ for cnt in contours:
     hull = cv2.convexHull(approx, returnPoints=False)
     sides = len(hull)
 
+    # print('\n peri:\n', peri)
+    # print('\n approx:\n', approx)
+    # print('\n hull:\n', hull)
+    # print('\n hull_squeeze:\n', hull.squeeze())
+    # print('\n sides:\n', sides)
+
+    # img_approx = img.copy()
+    # cv2.drawContours(img_approx, approx, -1, (0, 255, 0), 3)
+    # cv2.imshow("img_approx", img_approx)
+    # cv2.waitKey(0)
+
     if 6 > sides > 3 and sides + 2 == len(approx):
         arrow_tip = find_tip(approx[:,0,:], hull.squeeze())
         if arrow_tip:

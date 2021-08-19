@@ -1,4 +1,8 @@
 import numpy as np
 
-a = np.float32([12.34, 2.1, 3])
-print(a[:2])
+a = 5
+if 2 < a < 7 < 8:
+    print('yes')
+
+else:
+    print('no')
