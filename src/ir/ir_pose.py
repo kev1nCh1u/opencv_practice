@@ -6,7 +6,7 @@ import glob
 print(cv2.__version__)
 
 # cap = cv2.VideoCapture(0)
-fname = "img\ir_led_4_turn.bmp"
+fname = "img\ir_led_4.bmp"
 cap = cv2.imread(fname)
 
 ########################################################################################
@@ -55,8 +55,8 @@ cv2.drawContours(imgResult, contours, -1, (0, 255, 0), 1)
 # find circle center
 ###################################################################################
 # kevin value points
-points = np.zeros((5, 1, 2), np.int32)
-i = 1
+ir_points = np.zeros((4, 1, 2), np.int32)
+i = 0
 
 for c in contours:
     # calculate moments for each contour
@@ -66,28 +66,56 @@ for c in contours:
 
     # kevin save point
     point = np.array([cX, cY], np.int32)
-    points[i][0] = point
+    ir_points[i][0] = point
     i += 1
 
-print('\n points: \n', points)
+print('\n ir_points: \n', ir_points)
 
 ###################################################################################
 # find obj center
 ###################################################################################
-M = cv2.moments(points[1:])
+center_points = np.zeros((5, 1, 2), np.int32)
+
+M = cv2.moments(ir_points)
 cX = int(M["m10"] / M["m00"])
 cY = int(M["m01"] / M["m00"])
 
 point = np.array([cX, cY], np.int32)
 print('point:', point)
-points[0][0] = point
-print('\n points: \n', points)
+center_points[0][0] = point
+center_points[1:] = ir_points
+print('\n center_points: \n', center_points)
+
+###################################################################################
+# find direction
+###################################################################################
+x,y,w,h = cv2.boundingRect(center_points)
+cv2.rectangle(imgResult,(x,y),(x+w,y+h),(0,255,0),2)
+
+rect = cv2.minAreaRect(center_points)
+box = cv2.boxPoints(rect)
+box = np.int0(box)
+cv2.drawContours(imgResult,[box],0,(0,0,255),2)
+
+(x,y),radius = cv2.minEnclosingCircle(center_points)
+center = (int(x),int(y))
+radius = int(radius)
+cv2.circle(imgResult,center,radius,(0,255,0),2)
+
+ellipse = cv2.fitEllipse(center_points)
+cv2.ellipse(imgResult,ellipse,(0,255,0),2)
+
+rows,cols = imgResult.shape[:2]
+[vx,vy,x,y] = cv2.fitLine(center_points, cv2.DIST_L2,0,0.01,0.01)
+lefty = int((-x*vy/vx) + y)
+righty = int(((cols-x)*vy/vx)+y)
+cv2.line(imgResult,(cols-1,righty),(0,lefty),(0,255,0),2)
 
 ###################################################################################
 # draw point
 ###################################################################################
 i = 0
-for p in points:
+for p in center_points:
 	cX = p[0][0]
 	cY = p[0][1]
     # calculate x,y coordinate of center
@@ -96,14 +124,14 @@ for p in points:
 	cv2.putText(imgResult, xy, (cX + 15, cY + 2),
 				cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
 	i += 1
-# cv2.imshow('imgResult', imgResult)
+cv2.imshow('imgResult', imgResult)
 
 ###################################################################################
 # find point end
 ###################################################################################
-# cv2.waitKey(1000)
+cv2.waitKey(0)
 cv2.destroyAllWindows()
-
+exit()
 ########################################################################################
 # draw xyz
 ########################################################################################
@@ -123,7 +151,7 @@ def draw(img, corners, imgpts):
 ########################################################################################
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
-corners2 = points.astype(np.float32)
+corners2 = center_points.astype(np.float32)
 print('\n corners2:')
 print('corners2 type:', type(corners2))
 print('corners2 shape:', corners2.shape)
