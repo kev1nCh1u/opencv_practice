@@ -3,7 +3,7 @@ import numpy as np
 import yaml
 import glob
 
-print(cv2.__version__)
+print('\n opencv version:', cv2.__version__)
 
 # cap = cv2.VideoCapture(0)
 fname = "img\ir_led_4.bmp"
@@ -81,35 +81,62 @@ cX = int(M["m10"] / M["m00"])
 cY = int(M["m01"] / M["m00"])
 
 point = np.array([cX, cY], np.int32)
-print('point:', point)
+print('\n center:', point)
 center_points[0][0] = point
 center_points[1:] = ir_points
 print('\n center_points: \n', center_points)
+print()
 
 ###################################################################################
 # find direction
 ###################################################################################
-x,y,w,h = cv2.boundingRect(center_points)
-cv2.rectangle(imgResult,(x,y),(x+w,y+h),(0,255,0),2)
+# Pythagorean distance
+def distance(point1, point2):
+    # x = x1 - x2
+    # y = y1 - y2
+    x = point1[0] - point2[0]
+    y = point1[1] - point2[1]
+    ans = (x ** 2 + y ** 2) ** 0.5
+    return ans
 
-rect = cv2.minAreaRect(center_points)
-box = cv2.boxPoints(rect)
-box = np.int0(box)
-cv2.drawContours(imgResult,[box],0,(0,0,255),2)
+closestDis = float('Inf')
+closestNum = 0
+comparePoint = center_points[0].squeeze()
+disArr = []
+for i in range(1, len(center_points)):
+    point = center_points[i].squeeze()
+    dis = distance(comparePoint, point)
+    if(dis < closestDis):
+        closestDis = dis
+        closestNum = i
+    disArr.append(dis)
+print('\n center_dis\n', disArr, '\n')
 
-(x,y),radius = cv2.minEnclosingCircle(center_points)
-center = (int(x),int(y))
-radius = int(radius)
-cv2.circle(imgResult,center,radius,(0,255,0),2)
+center_points[[1, closestNum]] = center_points[[closestNum, 1]]
+print('\n center_points\n', center_points, '\n')
 
-ellipse = cv2.fitEllipse(center_points)
-cv2.ellipse(imgResult,ellipse,(0,255,0),2)
+closestDis = float('Inf')
+closestNum = 0
+farthestDis = 0
+farthestNum = 0
+comparePoint = center_points[1].squeeze()
+disArr = np.zeros((4, 1, 2), np.int32)
+disArr = []
+for i in range(2, len(center_points)):
+    point = center_points[i].squeeze()
+    dis = distance(comparePoint, point)
+    if(dis < closestDis):
+        closestDis = dis
+        closestNum = i
+    if(dis > farthestDis):
+        farthestDis = dis
+        farthestNum = i
+    disArr.append(dis)
+print('\n dis\n', disArr, '\n')
 
-rows,cols = imgResult.shape[:2]
-[vx,vy,x,y] = cv2.fitLine(center_points, cv2.DIST_L2,0,0.01,0.01)
-lefty = int((-x*vy/vx) + y)
-righty = int(((cols-x)*vy/vx)+y)
-cv2.line(imgResult,(cols-1,righty),(0,lefty),(0,255,0),2)
+center_points[[2, closestNum]] = center_points[[closestNum, 2]]
+center_points[[4, farthestNum]] = center_points[[farthestNum, 4]]
+print('\n center_points\n', center_points, '\n')
 
 ###################################################################################
 # draw point
@@ -129,9 +156,9 @@ cv2.imshow('imgResult', imgResult)
 ###################################################################################
 # find point end
 ###################################################################################
-cv2.waitKey(0)
+# cv2.waitKey(0)
 cv2.destroyAllWindows()
-exit()
+
 ########################################################################################
 # draw xyz
 ########################################################################################
@@ -151,18 +178,17 @@ def draw(img, corners, imgpts):
 ########################################################################################
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
-corners2 = center_points.astype(np.float32)
+corners2 = center_points[1:].astype(np.float32)
 print('\n corners2:')
 print('corners2 type:', type(corners2))
 print('corners2 shape:', corners2.shape)
 print(corners2)
 
 objp = np.array([
-	(0.0, 0.0, 0.0),
-    (1.0, -1.0, 0.0),
-    (1.0, 0.0, 0.0),
-    (1.0, 1.0, 0.0),
-    (-1.0, -1.0, 0.0),
+    (0.0, 0.0, 0.0),
+    (-1.5, 0.0, 0.0),
+    (2, 0.0, 0.0),
+    (2, -3.5, 0.0),
 ])
 print('\n objp: \n', objp)
 
