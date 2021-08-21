@@ -5,9 +5,14 @@ import glob
 
 print('\n opencv version:', cv2.__version__)
 
-# cap = cv2.VideoCapture(0)
-fname = "img\ir_led_4.bmp"
-cap = cv2.imread(fname)
+########################################################################################
+# load img
+########################################################################################
+if 0:
+    cap = cv2.VideoCapture(0)
+else:
+    fname = "img\ir_led_4.bmp"
+    cap = cv2.imread(fname)
 
 ########################################################################################
 # load calibration file
@@ -33,23 +38,21 @@ img = cap.copy()
 gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 # convert the grayscale image to binary image
 ret, thresh = cv2.threshold(gray_image, 80, 255, 0)
-# cv2.imshow('gray_image', gray_image)
-# cv2.imshow('thresh', thresh)
-# cv2.waitKey(0)
-mask = thresh.copy()
+if 0:
+    cv2.imshow('gray_image', gray_image)
+    cv2.imshow('thresh', thresh)
+    cv2.waitKey(0)
 
 ###################################################################################
 # findContours
 ###################################################################################
 imgResult = cap.copy()
-# gray = cv2.cv2tColor(res,cv2.COLOR_BGR2GRAY)
-# ret, binary = cv2.threshold(gray,127,255,cv2.THRESH_BINARY)
 contours, hierarchy = cv2.findContours(
-    mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 cv2.drawContours(imgResult, contours, -1, (0, 255, 0), 1)
-
-# cv2.imshow('gray',gray)
-# cv2.imshow('imgResult',imgResult)
+if 0:
+    cv2.imshow('imgResult',imgResult)
+    cv2.waitKey(0)
 
 ###################################################################################
 # find circle center
@@ -72,7 +75,7 @@ for c in contours:
 print('\n ir_points: \n', ir_points)
 
 ###################################################################################
-# find obj center
+# find object center
 ###################################################################################
 center_points = np.zeros((5, 1, 2), np.int32)
 
@@ -92,12 +95,11 @@ print()
 ###################################################################################
 # Pythagorean distance
 def distance(point1, point2):
-    # x = x1 - x2
-    # y = y1 - y2
     x = point1[0] - point2[0]
     y = point1[1] - point2[1]
     ans = (x ** 2 + y ** 2) ** 0.5
     return ans
+
 
 closestDis = float('Inf')
 closestNum = 0
@@ -143,25 +145,23 @@ print('\n center_points\n', center_points, '\n')
 ###################################################################################
 i = 0
 for p in center_points:
-	cX = p[0][0]
-	cY = p[0][1]
+    cX = p[0][0]
+    cY = p[0][1]
     # calculate x,y coordinate of center
-	cv2.circle(imgResult, (cX, cY), 2, (0, 0, 255), -1)
-	xy = str(i) + ' x:' + str(cX) + ' y:' + str(cY)
-	cv2.putText(imgResult, xy, (cX + 15, cY + 2),
-				cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
-	i += 1
-cv2.imshow('imgResult', imgResult)
-
-###################################################################################
-# find point end
-###################################################################################
-# cv2.waitKey(0)
-cv2.destroyAllWindows()
+    cv2.circle(imgResult, (cX, cY), 2, (0, 0, 255), -1)
+    xy = str(i) + ' x:' + str(cX) + ' y:' + str(cY)
+    cv2.putText(imgResult, xy, (cX + 15, cY + 2),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
+    i += 1
+if 0:
+    cv2.imshow('imgResult', imgResult)
+    cv2.waitKey(0)
 
 ########################################################################################
 # draw xyz
 ########################################################################################
+
+
 def draw(img, corners, imgpts):
     corner = tuple(corners[0].astype(np.int32).ravel())
     img = cv2.line(img, corner, tuple(
@@ -207,5 +207,5 @@ imgResult = draw(imgResult, corners2, imgpts)
 cv2.imshow('imgResult', imgResult)
 k = cv2.waitKey(0) & 0xFF
 if k == ord('s'):
-	cv2.imwrite(fname + '_result' +'.png', imgResult)
+    cv2.imwrite(fname + '_result' + '.png', imgResult)
 cv2.destroyAllWindows()
