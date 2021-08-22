@@ -11,7 +11,7 @@ print('\n opencv version:', cv2.__version__)
 if 0:
     cap = cv2.VideoCapture(0)
 else:
-    fname = "img\ir_led_4.bmp"
+    fname = "img\ir_led_4_.bmp"
     cap = cv2.imread(fname)
 
 ########################################################################################
@@ -149,9 +149,9 @@ for p in center_points:
     cY = p[0][1]
     # calculate x,y coordinate of center
     cv2.circle(imgResult, (cX, cY), 2, (0, 0, 255), -1)
-    xy = str(i) + ' x:' + str(cX) + ' y:' + str(cY)
-    cv2.putText(imgResult, xy, (cX + 15, cY + 2),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
+    strVar = str(i)
+    cv2.putText(imgResult, strVar, (cX + 15, cY + 2),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1)
     i += 1
 if 0:
     cv2.imshow('imgResult', imgResult)
@@ -160,8 +160,6 @@ if 0:
 ########################################################################################
 # draw xyz
 ########################################################################################
-
-
 def draw(img, corners, imgpts):
     corner = tuple(corners[0].astype(np.int32).ravel())
     img = cv2.line(img, corner, tuple(
@@ -186,24 +184,35 @@ print(corners2)
 
 objp = np.array([
     (0.0, 0.0, 0.0),
-    (-1.5, 0.0, 0.0),
-    (2, 0.0, 0.0),
-    (2, -3.5, 0.0),
+    (1.0, 0.0, 0.0),
+    (-2.0, 0.0, 0.0),
+    (-2.0, -4.0, 0.0),
 ])
 print('\n objp: \n', objp)
 
-axis = np.float32([[2, 0, 0], [0, 2, 0], [0, 0, -2]]).reshape(-1, 3)
+axis = np.float32([[0.1, 0, 0], [0, 0.1, 0], [0, 0, -0.1]]).reshape(-1, 3)
 
 # Find the rotation and translation vectors.
 ret, rvecs, tvecs = cv2.solvePnP(objp, corners2, mtx, dist)
 # project 3D points to image plane
 imgpts, jac = cv2.projectPoints(axis, rvecs, tvecs, mtx, dist)
+imgResult = draw(imgResult, corners2, imgpts)
 
+imgpts, jac = cv2.projectPoints(np.array([(0.0, 0.0, 0.1)]), rvecs, tvecs, mtx, dist)
+
+point1 = (int(corners2[0][0][0]), int(corners2[0][0][1]))
+print(point1)
+point2 = (int(imgpts[0][0][0]), int(imgpts[0][0][1]))
+print(point2)
+
+cv2.line(imgResult, point1, point2, (255,255,255), 2)
+# cv2.imshow('imgResult', imgResult)
+# cv2.waitKey(0)
 
 ########################################################################################
 # end
 ########################################################################################
-imgResult = draw(imgResult, corners2, imgpts)
+
 cv2.imshow('imgResult', imgResult)
 k = cv2.waitKey(0) & 0xFF
 if k == ord('s'):
