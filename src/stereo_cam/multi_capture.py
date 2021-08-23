@@ -1,3 +1,8 @@
+########################################################################################
+# multi_capture
+# by kevin
+########################################################################################
+
 import cv2
 import numpy as np
 import yaml
@@ -37,6 +42,7 @@ while(True):
     if inputKey == ord('s'):
         cv2.imwrite('img/stereo_calibration/1/frame1_' + str(int(current_time)) + '.jpg', frame)
         cv2.imwrite('img/stereo_calibration/2/frame2_' + str(int(current_time)) + '.jpg', frame2)
+        print('save: ' + str(int(current_time)))
 
     # 若按下 q 鍵則離開迴圈
     if inputKey == ord('q'):
