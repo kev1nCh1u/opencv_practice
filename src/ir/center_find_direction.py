@@ -35,6 +35,8 @@ def findDirection(center_points):
     center_points[[1, closestNum]] = center_points[[closestNum, 1]]
     print('\n center_points\n', center_points, '\n')
 
+    print('\n test\n', center_points[[closestNum, 1]], '\n')
+
     # closest farthest point with center closest point
     closestDis = float('Inf')
     closestNum = 0

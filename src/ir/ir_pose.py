@@ -3,6 +3,7 @@ import numpy as np
 import yaml
 import glob
 import center_find_direction
+import farthest_find_direction
 
 print('\n opencv version:', cv2.__version__)
 
@@ -12,8 +13,9 @@ print('\n opencv version:', cv2.__version__)
 if 0:
     cap = cv2.VideoCapture(0)
 else:
-    fname = "img\ir_led_4_.bmp"
-    cap = cv2.imread(fname)
+    path = "img/"
+    fname = "ir_led_4.bmp"
+    cap = cv2.imread(path + fname)
 
 ########################################################################################
 # load calibration file
@@ -95,7 +97,9 @@ print()
 # find direction
 ###################################################################################
 center_points = center_find_direction.findDirection(center_points)
+ir_points = farthest_find_direction.findDirection(ir_points)
 
+center_points[1:] = ir_points
 
 ###################################################################################
 # draw point
@@ -145,9 +149,17 @@ objp = np.array([
     (-2.0, 0.0, 0.0),
     (-2.0, -4.0, 0.0),
 ])
+
+objp = np.array([
+    (0.0, 0.0, 0.0),
+    (2.0, 171.0, 0.0),
+    (84.0, 170.0, 0.0),
+    (134.0, 169.0, 0.0),
+])
+
 print('\n objp: \n', objp)
 
-axis = np.float32([[0.1, 0, 0], [0, 0.1, 0], [0, 0, -0.1]]).reshape(-1, 3)
+axis = np.float32([[100, 0, 0], [0, 100, 0], [0, 0, -100]]).reshape(-1, 3)
 
 # Find the rotation and translation vectors.
 ret, rvecs, tvecs = cv2.solvePnP(objp, corners2, mtx, dist)
@@ -155,16 +167,8 @@ ret, rvecs, tvecs = cv2.solvePnP(objp, corners2, mtx, dist)
 imgpts, jac = cv2.projectPoints(axis, rvecs, tvecs, mtx, dist)
 imgResult = draw(imgResult, corners2, imgpts)
 
-imgpts, jac = cv2.projectPoints(np.array([(0.0, 0.0, 0.1)]), rvecs, tvecs, mtx, dist)
-
-point1 = (int(corners2[0][0][0]), int(corners2[0][0][1]))
-print(point1)
-point2 = (int(imgpts[0][0][0]), int(imgpts[0][0][1]))
-print(point2)
-
-cv2.line(imgResult, point1, point2, (255,255,255), 2)
-# cv2.imshow('imgResult', imgResult)
-# cv2.waitKey(0)
+# imgpts, jac = cv2.projectPoints(np.array([(0.0, 0.0, -200)]), rvecs, tvecs, mtx, dist)
+# cv2.line(imgResult, point1, point2, (255,255,255), 2)
 
 ########################################################################################
 # end
@@ -172,6 +176,6 @@ cv2.line(imgResult, point1, point2, (255,255,255), 2)
 
 cv2.imshow('imgResult', imgResult)
 k = cv2.waitKey(0) & 0xFF
-if k == ord('s'):
-    cv2.imwrite(fname + '_result' + '.png', imgResult)
+if k == ord('s') or True:
+    cv2.imwrite(path + 'result/' + fname + '_result' + '.png', imgResult)
 cv2.destroyAllWindows()
