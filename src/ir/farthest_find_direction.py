@@ -37,8 +37,10 @@ def findDirection(inputPoints):
     inputPoints[[0, farthestNum]] = inputPoints[[farthestNum, 0]]
     print('\n inputPoints\n', inputPoints, '\n')
 
+    # sort out other point
     for i in range(inputPoints_size - 1):
         for j in range(1, inputPoints_size - 1):
+            # cloeset
             if(disArr[farthestNum][j] > disArr[farthestNum][j + 1]):
                 disArr[farthestNum][j], disArr[farthestNum][j + 1] = disArr[farthestNum][j + 1], disArr[farthestNum][j]
                 inputPoints[[j, j + 1]] = inputPoints[[j + 1, j]]

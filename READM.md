@@ -1,4 +1,4 @@
 # opencv practice
 
 ## circle
-    python .\src\detect_circles.py -i img\orange.jpg
+    python .\src\color\detect_circles.py -i img\orange.jpg
