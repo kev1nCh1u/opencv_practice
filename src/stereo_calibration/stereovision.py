@@ -11,16 +11,31 @@ stereoMapL_y = cv_file.getNode('stereoMapL_y').mat()
 stereoMapR_x = cv_file.getNode('stereoMapR_x').mat()
 stereoMapR_y = cv_file.getNode('stereoMapR_y').mat()
 
+capFlag = 1
 
 # Open both cameras
-cap_right = cv2.VideoCapture(2, cv2.CAP_DSHOW)                    
-cap_left =  cv2.VideoCapture(0, cv2.CAP_DSHOW)
+if capFlag:
+    cap_right = cv2.VideoCapture(0, cv2.CAP_DSHOW)                    
+    cap_left =  cv2.VideoCapture(1, cv2.CAP_DSHOW)
+
+    if not(cap_right.isOpened() and cap_left.isOpened()):
+        exit()
+else:
+    path = "img/stereo_calibration/"
+    fname = "1/frame1_1629687726.jpg"
+    fname2 = "2/frame2_1629687726.jpg"
+    cap_right = cv2.imread(path + fname2)
+    cap_left = cv2.imread(path + fname)
 
 
-while(cap_right.isOpened() and cap_left.isOpened()):
+while(1):
 
-    succes_right, frame_right = cap_right.read()
-    succes_left, frame_left = cap_left.read()
+    if capFlag:
+        succes_right, frame_right = cap_right.read()
+        succes_left, frame_left = cap_left.read()
+    else:
+        frame_right = cap_right
+        frame_left = cap_left
 
     # Undistort and rectify images
     frame_right = cv2.remap(frame_right, stereoMapR_x, stereoMapR_y, cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)

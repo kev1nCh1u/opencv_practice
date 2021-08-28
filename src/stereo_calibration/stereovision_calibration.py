@@ -17,7 +17,7 @@ criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 objp = np.zeros((chessboardSize[0] * chessboardSize[1], 3), np.float32)
 objp[:,:2] = np.mgrid[0:chessboardSize[0],0:chessboardSize[1]].T.reshape(-1,2)
 
-objp = objp * 20
+objp = objp * 27
 print(objp)
 
 # Arrays to store object points and image points from all the images.
@@ -26,8 +26,8 @@ imgpointsL = [] # 2d points in image plane.
 imgpointsR = [] # 2d points in image plane.
 
 
-imagesLeft = glob.glob('images/stereoLeft/*.png')
-imagesRight = glob.glob('images/stereoRight/*.png')
+imagesLeft = glob.glob('img/stereo_calibration/1/*.jpg')
+imagesRight = glob.glob('img/stereo_calibration/2/*.jpg')
 
 for imgLeft, imgRight in zip(imagesLeft, imagesRight):
 
@@ -56,7 +56,7 @@ for imgLeft, imgRight in zip(imagesLeft, imagesRight):
         cv.imshow('img left', imgL)
         cv.drawChessboardCorners(imgR, chessboardSize, cornersR, retR)
         cv.imshow('img right', imgR)
-        cv.waitKey(1000)
+        cv.waitKey(100)
 
 
 cv.destroyAllWindows()
