@@ -19,3 +19,9 @@ target_link_libraries( stereo_calib ${OpenCV_LIBS} )
 
 add_executable( stereo_match src/opencv_sample/stereo_match.cpp )
 target_link_libraries( stereo_match ${OpenCV_LIBS} )
+
+add_executable( imagelist_creator src/opencv_sample/imagelist_creator.cpp )
+target_link_libraries( imagelist_creator ${OpenCV_LIBS} )
+
+add_executable( camera_calibration src/opencv_sample/camera_calibration.cpp )
+target_link_libraries( camera_calibration ${OpenCV_LIBS} )
