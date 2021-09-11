@@ -1,5 +1,10 @@
 # opencv practice
 
+
+## dir
+1:left 2:right
+
+
 ## install
     pip3 install opencv-contrib-python
 

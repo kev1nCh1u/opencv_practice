@@ -17,8 +17,8 @@ mp_facedetector = mp.solutions.face_detection
 mp_draw = mp.solutions.drawing_utils
 
 # Open both cameras
-cap_right = cv2.VideoCapture(1, cv2.CAP_DSHOW)                    
-cap_left =  cv2.VideoCapture(0, cv2.CAP_DSHOW)
+cap_left =  cv2.VideoCapture(2, cv2.CAP_DSHOW)
+cap_right = cv2.VideoCapture(4, cv2.CAP_DSHOW)                    
 
 
 # Stereo vision setup parameters

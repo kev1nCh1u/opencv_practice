@@ -26,10 +26,12 @@ imgpointsL = [] # 2d points in image plane.
 imgpointsR = [] # 2d points in image plane.
 
 
-imagesLeft = glob.glob('images/stereoLeft/*.png')
-imagesRight = glob.glob('images/stereoRight/*.png')
+imagesLeft = glob.glob('img/stereo_calibration/1/*jpg')
+imagesRight = glob.glob('img/stereo_calibration/2/*.jpg')
 
 for imgLeft, imgRight in zip(imagesLeft, imagesRight):
+
+    print(imgLeft, imgRight)
 
     imgL = cv.imread(imgLeft)
     imgR = cv.imread(imgRight)
@@ -56,7 +58,7 @@ for imgLeft, imgRight in zip(imagesLeft, imagesRight):
         cv.imshow('img left', imgL)
         cv.drawChessboardCorners(imgR, chessboardSize, cornersR, retR)
         cv.imshow('img right', imgR)
-        cv.waitKey(1000)
+        cv.waitKey(500)
 
 
 cv.destroyAllWindows()

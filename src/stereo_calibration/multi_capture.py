@@ -14,15 +14,24 @@ print('\n opencv version:', cv2.__version__)
 # Capture img
 ########################################################################################
 print('videoCapture....')
-# cap = cv2.VideoCapture(0)
-# cap2 = cv2.VideoCapture(1)
-cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-cap2 = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+cap = cv2.VideoCapture(2)
+cap2 = cv2.VideoCapture(4)
+# cap = cv2.VideoCapture(2, cv2.CAP_DSHOW)
+# cap2 = cv2.VideoCapture(4, cv2.CAP_DSHOW)
 print('finish...\n')
+
+if not (cap.isOpened()):
+    print("Could not open video device")
+    exit()
+
+if not (cap2.isOpened()):
+    print("Could not open video device 2")
+    exit()
 
 ########################################################################################
 # read img
 ########################################################################################
+i = 1
 while(True):
     # catch time
     current_time = time.time()
@@ -39,9 +48,12 @@ while(True):
 
     # if s save image
     if inputKey == ord('s'):
-        cv2.imwrite('img/stereo_calibration/1/frame1_' + str(int(current_time)) + '.jpg', frame)
-        cv2.imwrite('img/stereo_calibration/2/frame2_' + str(int(current_time)) + '.jpg', frame2)
-        print('save: ' + str(int(current_time)))
+        # cv2.imwrite('img/stereo_calibration/1/left' + str(int(current_time)) + '.jpg', frame)
+        # cv2.imwrite('img/stereo_calibration/2/right' + str(int(current_time)) + '.jpg', frame2)
+        cv2.imwrite('img/stereo_calibration/1/left' + "{0:0=2d}".format(i)+ '.jpg', frame)
+        cv2.imwrite('img/stereo_calibration/2/right' + "{0:0=2d}".format(i)+ '.jpg', frame2)
+        print('save: ' + str(int(current_time)), "{0:0=2d}".format(i))
+        i += 1
 
     # 若按下 q 鍵則離開迴圈
     if inputKey == ord('q'):
