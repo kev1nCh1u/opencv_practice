@@ -15,18 +15,20 @@ capFlag = 1
 
 # Open both cameras
 if capFlag:
-    cap_right = cv2.VideoCapture(0, cv2.CAP_DSHOW)                    
-    cap_left =  cv2.VideoCapture(1, cv2.CAP_DSHOW)
+    cap_right = cv2.VideoCapture(0)                    
+    cap_left =  cv2.VideoCapture(4)
+
+    # cap_right = cv2.VideoCapture(0, cv2.CAP_DSHOW)                    
+    # cap_left =  cv2.VideoCapture(4, cv2.CAP_DSHOW)
 
     if not(cap_right.isOpened() and cap_left.isOpened()):
         exit()
 else:
     path = "img/stereo_calibration/"
-    fname = "1/frame1_1629687726.jpg"
-    fname2 = "2/frame2_1629687726.jpg"
+    fname = "20210911/1/01.jpg"
+    fname2 = "20210911/2/01.jpg"
     cap_right = cv2.imread(path + fname2)
     cap_left = cv2.imread(path + fname)
-
 
 while(1):
 

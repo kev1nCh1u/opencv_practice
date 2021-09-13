@@ -1,7 +1,7 @@
 import cv2
 
 # 選擇第二隻攝影機
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(4)
 
 if not (cap.isOpened()):
     print("Could not open video device")

@@ -26,8 +26,8 @@ imgpointsL = [] # 2d points in image plane.
 imgpointsR = [] # 2d points in image plane.
 
 
-imagesLeft = glob.glob('img/stereo_calibration/1/*.jpg')
-imagesRight = glob.glob('img/stereo_calibration/2/*.jpg')
+imagesLeft = glob.glob('img/stereo_calibration/20210911/1/*.jpg')
+imagesRight = glob.glob('img/stereo_calibration/20210911/2/*.jpg')
 
 for imgLeft, imgRight in zip(imagesLeft, imagesRight):
 
