@@ -10,11 +10,13 @@ import time
 
 print('\n opencv version:', cv2.__version__)
 
+save_path = 'img/stereo_calibration/ball/'
+
 ########################################################################################
 # Capture img
 ########################################################################################
 print('videoCapture....')
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(0)
 cap2 = cv2.VideoCapture(4)
 # cap = cv2.VideoCapture(2, cv2.CAP_DSHOW)
 # cap2 = cv2.VideoCapture(4, cv2.CAP_DSHOW)
@@ -48,10 +50,10 @@ while(True):
 
     # if s save image
     if inputKey == ord('s'):
-        # cv2.imwrite('img/stereo_calibration/1/left' + str(int(current_time)) + '.jpg', frame)
-        # cv2.imwrite('img/stereo_calibration/2/right' + str(int(current_time)) + '.jpg', frame2)
-        cv2.imwrite('img/stereo_calibration/1/left' + "{0:0=2d}".format(i)+ '.jpg', frame)
-        cv2.imwrite('img/stereo_calibration/2/right' + "{0:0=2d}".format(i)+ '.jpg', frame2)
+        # cv2.imwrite(save_path + '1/left' + str(int(current_time)) + '.jpg', frame)
+        # cv2.imwrite(save_path + '2/right' + str(int(current_time)) + '.jpg', frame2)
+        cv2.imwrite(save_path + '1/left' + "{0:0=2d}".format(i)+ '.jpg', frame)
+        cv2.imwrite(save_path + '2/right' + "{0:0=2d}".format(i)+ '.jpg', frame2)
         print('save: ' + str(int(current_time)), "{0:0=2d}".format(i))
         i += 1
 
