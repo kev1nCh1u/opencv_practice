@@ -9,7 +9,7 @@
     pip3 install opencv-contrib-python
 
 ## circle
-    python .\src\color\detect_circles.py -i img\orange.jpg
+    python ./src/color/detect_circles.py -i img/orange.jpg
 
 
 ## opencv calibration sample

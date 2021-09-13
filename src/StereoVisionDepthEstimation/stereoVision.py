@@ -10,7 +10,7 @@ import triangulation as tri
 import calibration
 
 # Mediapipe for face detection
-import mediapipe as mp
+# import mediapipe as mp
 import time
 
 mp_facedetector = mp.solutions.face_detection
@@ -33,10 +33,14 @@ alpha = 56.6        #Camera field of view in the horisontal plane [degrees]
 # Main program loop with face detector and depth estimation using stereo vision
 with mp_facedetector.FaceDetection(min_detection_confidence=0.7) as face_detection:
 
+
     while(cap_right.isOpened() and cap_left.isOpened()):
 
-        succes_right, frame_right = cap_right.read()
-        succes_left, frame_left = cap_left.read()
+        # succes_right, frame_right = cap_right.read()
+        # succes_left, frame_left = cap_left.read()
+
+        frame_left = cv2.imread("img/stereo_calibration/20210911/1/01.jpg")
+        frame_left = cv2.imread("img/stereo_calibration/20210911/2/01.jpg")
 
     ################## CALIBRATION #########################################################
 

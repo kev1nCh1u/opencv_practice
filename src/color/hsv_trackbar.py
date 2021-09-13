@@ -39,11 +39,17 @@ cv2.createTrackbar('high S', 'controls', 255, 255, callback)
 cv2.createTrackbar('low V', 'controls', 0, 255, callback)
 cv2.createTrackbar('high V', 'controls', 255, 255, callback)
 
+# cap = cv2.VideoCapture(2)
+# if not (cap.isOpened()):
+#     print("Could not open video device")
+#     exit()
 
 while(1):
     # read source image
-    img = cv2.imread("img\smarties.png")
-    # img = cv2.VideoCapture(0)
+    # img = cv2.imread("img\smarties.png")
+    img = cv2.imread("img/stereo_calibration/ball/1/left01.jpg")
+    # ret, img = cap.read()
+    
     # convert sourece image to HSC color mode
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
