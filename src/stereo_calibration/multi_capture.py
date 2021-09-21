@@ -16,8 +16,8 @@ save_path = 'img/stereo_calibration/test/'
 # Capture img
 ########################################################################################
 print('videoCapture....')
-cap = cv2.VideoCapture(4)
-cap2 = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
+cap2 = cv2.VideoCapture(4)
 # cap = cv2.VideoCapture(2, cv2.CAP_DSHOW)
 # cap2 = cv2.VideoCapture(4, cv2.CAP_DSHOW)
 print('finish...\n')
