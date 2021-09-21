@@ -42,8 +42,9 @@ criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 # succes_right, frame_right = cap_right.read()
 # succes_left, frame_left = cap_left.read()
 
-frame_left = cv2.imread("img/stereo_calibration/test/1/left05.jpg")
-frame_right = cv2.imread("img/stereo_calibration/test/2/right05.jpg")
+path = "img/stereo_calibration/test/"
+frame_left = cv2.imread(path + "1/01.jpg")
+frame_right = cv2.imread(path + "2/01.jpg")
 
 # cv2.imshow('frame_left',frame_left)
 # cv2.imshow('frame_right',frame_right)
