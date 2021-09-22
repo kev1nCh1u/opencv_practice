@@ -25,8 +25,8 @@ cap_right = cv2.VideoCapture(0)
 
 # Stereo vision setup parameters
 frame_rate = 120    #Camera frame rate (maximum at 120 fps)
-B = 13.8               #Distance between the cameras [cm]
-f = 8.2              #Camera lense's focal length [mm]
+B = 138.7621973824445               #Distance between the cameras [cm]
+f = 824.5206925014977              #Camera lense's focal length [mm]
 alpha = 56.6        #Camera field of view in the horisontal plane [degrees]
 
 
@@ -43,8 +43,8 @@ criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 # succes_left, frame_left = cap_left.read()
 
 path = "img/stereo_calibration/test/"
-frame_left = cv2.imread(path + "1/01.jpg")
-frame_right = cv2.imread(path + "2/01.jpg")
+frame_left = cv2.imread(path + "1/04.jpg")
+frame_right = cv2.imread(path + "2/04.jpg")
 
 # cv2.imshow('frame_left',frame_left)
 # cv2.imshow('frame_right',frame_right)
@@ -100,16 +100,16 @@ else:
 
 # # If no ball can be caught in one camera show text "TRACKING LOST"
 if not ret_left  or not ret_right:
-    cv2.putText(frame_right, "TRACKING LOST", (75,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255),2)
-    cv2.putText(frame_left, "TRACKING LOST", (75,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255),2)
+    cv2.putText(frame_right, "Lost !!!", (75,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255),2)
+    cv2.putText(frame_left, "Lost !!!", (75,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255),2)
 
 else:
     # Function to calculate depth of object. Outputs vector of all depths in case of several balls.
     # All formulas used to find depth is in video presentaion
     depth = tri.find_depth(center_point_right, center_point_left, frame_right, frame_left, B, f, alpha)
 
-    cv2.putText(frame_right, "Distance: " + str(round(depth,1)) + 'cm', (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2)
-    cv2.putText(frame_left, "Distance: " + str(round(depth,1)) + 'cm', (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2)
+    cv2.putText(frame_right, "Dis: " + str(round(depth,1)), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+    cv2.putText(frame_left, "Dis: " + str(round(depth,1)), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
     # Multiply computer value with 205.8 to get real-life depth in [cm]. The factor was found manually.
     print("Depth: ", str(round(depth,1)))
 
@@ -127,8 +127,8 @@ fps = 1 / totalTime
 # cv2.putText(frame_left, f'time:'+ '{:.3f}'.format(totalTime) + 's', (50,450), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2)                                       
 
 if center_point_right.all() and center_point_left.all() :
-    cv2.circle(frame_right, center_point_right.astype(np.int32), 5, (0, 0, 255), -1)
-    cv2.circle(frame_left, center_point_left.astype(np.int32), 5, (0, 0, 255), -1)
+    cv2.circle(frame_right, center_point_right.astype(np.int32), 10, (0, 0, 255), -1)
+    cv2.circle(frame_left, center_point_left.astype(np.int32), 10, (0, 0, 255), -1)
 
 # Show the frames
 cv2.imshow("frame right", frame_right) 

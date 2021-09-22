@@ -12,7 +12,7 @@ def find_depth(right_point, left_point, frame_right, frame_left, baseline,f, alp
 
     if width_right == width_left:
         # f_pixel = (width_right * 0.5) / np.tan(alpha * 0.5 * np.pi/180)
-        f_pixel = f/10.
+        f_pixel = f
 
     else:
         print('Left and right camera frames do not have the same pixel width')
@@ -21,10 +21,11 @@ def find_depth(right_point, left_point, frame_right, frame_left, baseline,f, alp
     x_left = left_point[0]
 
     # CALCULATE THE DISPARITY:
-    disparity = x_left-x_right      #Displacement between left and right frames [pixels]
+    disparity = abs(x_left-x_right)      #Displacement between left and right frames [pixels]
 
     # CALCULATE DEPTH z:
-    zDepth = (baseline*f_pixel)/disparity             #Depth in [cm]
+    # zDepth = (baseline*f_pixel)/disparity             #Depth in [cm]
+    zDepth = (baseline*f_pixel)/disparity *2            #Depth in [mm]
 
     return zDepth
 
