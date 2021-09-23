@@ -35,7 +35,7 @@ def find_depth(right_point, left_point, frame_right, frame_left, baseline,f, alp
 
     # CALCULATE DEPTH z:
     # zDepth = (baseline*f_pixel)/disparity             #Depth in [mm]
-    zDepth = (baseline*f_pixel)/disparity *2            #Depth in [mm]
+    zDepth = (baseline*f_pixel)/disparity            #Depth in [mm]
 
     return zDepth
 
@@ -86,8 +86,8 @@ criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 # succes_left, frame_left = cap_left.read()
 
 path = "img/stereo_calibration/new/"
-frame_left = cv2.imread(path + "1/06.jpg")
-frame_right = cv2.imread(path + "2/06.jpg")
+frame_left = cv2.imread(path + "1/05.jpg") # 5 6
+frame_right = cv2.imread(path + "2/05.jpg")
 
 # cv2.imshow('frame_left',frame_left)
 # cv2.imshow('frame_right',frame_right)
