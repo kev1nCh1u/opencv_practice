@@ -10,14 +10,14 @@ import time
 
 print('\n opencv version:', cv2.__version__)
 
-save_path = 'img/stereo_calibration/test/'
+save_path = 'img/stereo_calibration/new/'
 
 ########################################################################################
 # Capture img
 ########################################################################################
 print('videoCapture....')
-cap = cv2.VideoCapture(4) #left
-cap2 = cv2.VideoCapture(0) #right
+cap = cv2.VideoCapture(2) #left
+cap2 = cv2.VideoCapture(4) #right
 # cap = cv2.VideoCapture(2, cv2.CAP_DSHOW)
 # cap2 = cv2.VideoCapture(4, cv2.CAP_DSHOW)
 print('finish...\n')
