@@ -52,9 +52,14 @@ while(True):
     if inputKey == ord('s'):
         # cv2.imwrite(save_path + '1/left' + str(int(current_time)) + '.jpg', frame)
         # cv2.imwrite(save_path + '2/right' + str(int(current_time)) + '.jpg', frame2)
+
+        # cv2.imwrite(save_path + '1/' + 'left' + "{0:0=2d}".format(i)+ '.jpg', frame)
+        # cv2.imwrite(save_path + '2/' + 'right' + "{0:0=2d}".format(i)+ '.jpg', frame2)
+
         cv2.imwrite(save_path + '1/' + "{0:0=2d}".format(i)+ '.jpg', frame)
         cv2.imwrite(save_path + '2/' + "{0:0=2d}".format(i)+ '.jpg', frame2)
-        print('save: ' + str(int(current_time)), "{0:0=2d}".format(i))
+
+        print('save:', save_path , str(int(current_time)), "{0:0=2d}".format(i))
         i += 1
 
     # 若按下 q 鍵則離開迴圈
@@ -63,7 +68,7 @@ while(True):
 
 # 釋放攝影機
 cap.release()
-ca2.release()
+cap2.release()
 
 # 關閉所有 OpenCV 視窗
 cv2.destroyAllWindows()
