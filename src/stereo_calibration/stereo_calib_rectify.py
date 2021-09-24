@@ -3,7 +3,7 @@ import cv2 as cv
 import glob
 
 
-################ FIND CHESSBOARD CORNERS - OBJECT POINTS AND IMAGE POINTS #############################
+################ parameter #############################
 
 chessboardSize = (9,6)
 frameSize = (640,480)
@@ -29,6 +29,7 @@ path = "img/stereo_calibration/new/"
 imagesLeft = glob.glob(path + '1/*.jpg')
 imagesRight = glob.glob(path + '2/*.jpg')
 
+################ FIND CHESSBOARD CORNERS - OBJECT POINTS AND IMAGE POINTS #############################
 for imgLeft, imgRight in zip(imagesLeft, imagesRight):
 
     print(imgLeft, imgRight)
