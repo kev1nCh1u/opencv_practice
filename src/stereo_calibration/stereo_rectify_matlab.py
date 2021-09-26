@@ -64,10 +64,20 @@ frame_right = cv.imread(path + '2/' + fname)
 
 frame_left = cv.remap(frame_left, stereoMapL_x, stereoMapL_y, cv.INTER_LANCZOS4, cv.BORDER_CONSTANT, 0)
 frame_right = cv.remap(frame_right, stereoMapR_x, stereoMapR_y, cv.INTER_LANCZOS4, cv.BORDER_CONSTANT, 0)
-                    
+
+############################### draw green line ##########################################################
+gap = 27
+for i in range(1, int(imageSize[1] / gap) + 1):
+    y = gap * i
+    cv.line(frame_left, (0, y), (imageSize[0], y), (0, 255, 0), 1)
+    cv.line(frame_right, (0, y), (imageSize[0], y), (0, 255, 0), 1)
+
+vis = np.concatenate((frame_left, frame_right), axis=1) # mix
+
 # Show the frames
 cv.imshow("frame left", frame_left)
-cv.imshow("frame right", frame_right) 
+cv.imshow("frame right", frame_right)
+cv.imshow("vis", vis)
 
 # Hit "q" to close the window
 cv.waitKey(0)

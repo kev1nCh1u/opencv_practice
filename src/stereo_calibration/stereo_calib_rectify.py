@@ -8,6 +8,8 @@ import glob
 chessboardSize = (9,6)
 frameSize = (640,480)
 
+path = "img/stereo_calibration/new/"
+fname = "05.jpg" # 5 6
 
 # termination criteria
 criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -109,11 +111,43 @@ stereoMapR = cv.initUndistortRectifyMap(newCameraMatrixR, distR, rectR, projMatr
 print("Saving parameters!")
 cv_file = cv.FileStorage('stereoMap.xml', cv.FILE_STORAGE_WRITE)
 
+stereoMapL_x = stereoMapL[0]
+stereoMapL_y = stereoMapL[1]
+stereoMapR_x = stereoMapR[0]
+stereoMapR_y = stereoMapR[1]
+
 cv_file.write('stereoMapL_x',stereoMapL[0])
 cv_file.write('stereoMapL_y',stereoMapL[1])
 cv_file.write('stereoMapR_x',stereoMapR[0])
 cv_file.write('stereoMapR_y',stereoMapR[1])
 
 cv_file.release()
+
+############################### remap ##########################################################
+frame_left = cv.imread(path + '1/' + fname)
+frame_right = cv.imread(path + '2/' + fname)
+
+frame_left = cv.remap(frame_left, stereoMapL_x, stereoMapL_y, cv.INTER_LANCZOS4, cv.BORDER_CONSTANT, 0)
+frame_right = cv.remap(frame_right, stereoMapR_x, stereoMapR_y, cv.INTER_LANCZOS4, cv.BORDER_CONSTANT, 0)
+
+############################### draw green line ##########################################################
+imageSize = frameSize
+gap = 27
+for i in range(1, int(imageSize[1] / gap) + 1):
+    y = gap * i
+    cv.line(frame_left, (0, y), (imageSize[0], y), (0, 255, 0), 1)
+    cv.line(frame_right, (0, y), (imageSize[0], y), (0, 255, 0), 1)
+
+vis = np.concatenate((frame_left, frame_right), axis=1) # mix
+
+# Show the frames
+cv.imshow("frame left", frame_left)
+cv.imshow("frame right", frame_right)
+cv.imshow("vis", vis)
+
+# Hit "q" to close the window
+cv.waitKey(0)
+
+cv.destroyAllWindows()
 
 

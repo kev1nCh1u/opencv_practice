@@ -86,8 +86,9 @@ criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 # succes_left, frame_left = cap_left.read()
 
 path = "img/stereo_calibration/new/"
-frame_left = cv2.imread(path + "1/05.jpg") # 5 6
-frame_right = cv2.imread(path + "2/05.jpg")
+fname = "03.jpg" # 5 6
+frame_left = cv2.imread(path + '1/' + fname)
+frame_right = cv2.imread(path + '2/' + fname)
 
 # cv2.imshow('frame_left',frame_left)
 # cv2.imshow('frame_right',frame_right)
@@ -173,9 +174,20 @@ if ret_left  or ret_right:
     cv2.circle(frame_right, center_point_right.astype(np.int32), 10, (0, 0, 255), -1)
     cv2.circle(frame_left, center_point_left.astype(np.int32), 10, (0, 0, 255), -1)
 
+############################### draw green line ##########################################################
+imageSize = (np.shape(stereoMapL_x)[1], np.shape(stereoMapL_x)[0])
+gap = 27
+for i in range(1, int(imageSize[1] / gap) + 1):
+    y = gap * i
+    cv2.line(frame_left, (0, y), (imageSize[0], y), (0, 255, 0), 1)
+    cv2.line(frame_right, (0, y), (imageSize[0], y), (0, 255, 0), 1)
+
+vis = np.concatenate((frame_left, frame_right), axis=1) # mix
+
 # Show the frames
-cv2.imshow("frame right", frame_right) 
 cv2.imshow("frame left", frame_left)
+cv2.imshow("frame right", frame_right)
+cv2.imshow("vis", vis)
 
 
 # Hit "q" to close the window
