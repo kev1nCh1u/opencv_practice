@@ -70,8 +70,8 @@ cap_right = cv2.VideoCapture(0)
 
 # Stereo vision setup parameters
 frame_rate = 120    #Camera frame rate (maximum at 120 fps)
-B = 138.7010724640130               #Distance between the cameras [mm]
-f = 820.8182                        #Camera lense's focal length [mm]
+B = 138.596414801303               #Distance between the cameras [mm]
+f = 811.060887393561                        #Camera lense's focal length [mm]
 alpha = 0        #Camera field of view in the horisontal plane [degrees]
 
 
@@ -86,7 +86,7 @@ criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 # succes_left, frame_left = cap_left.read()
 
 path = "img/stereo_calibration/new/"
-fname = "03.jpg" # 5 6
+fname = "01.jpg" # 5 6
 frame_left = cv2.imread(path + '1/' + fname)
 frame_right = cv2.imread(path + '2/' + fname)
 
@@ -187,7 +187,7 @@ vis = np.concatenate((frame_left, frame_right), axis=1) # mix
 # Show the frames
 cv2.imshow("frame left", frame_left)
 cv2.imshow("frame right", frame_right)
-cv2.imshow("vis", vis)
+cv2.imshow("vis" + fname, vis)
 
 
 # Hit "q" to close the window

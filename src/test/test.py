@@ -8,3 +8,6 @@ qq = np.transpose(np.array([
 
 print(qq)
 print(type(qq))
+
+imageSize = np.array([480	,640])[::-1]
+print(imageSize)
