@@ -86,7 +86,7 @@ criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 # succes_left, frame_left = cap_left.read()
 
 path = "img/stereo_calibration/new/"
-fname = "01.jpg" # 5 6
+fname = "06.jpg" # 5 6
 frame_left = cv2.imread(path + '1/' + fname)
 frame_right = cv2.imread(path + '2/' + fname)
 
@@ -130,6 +130,9 @@ ret_right, corners_right = cv2.findChessboardCorners(gray_right, (9, 6), None)
 # ret_right, corners_right = 0,0
 
 if ret_left  and ret_right:
+    # corners_left = cv2.cornerSubPix(gray_left,corners_left,(11,11),(-1,-1),criteria)
+    # corners_right = cv2.cornerSubPix(gray_right,corners_right,(11,11),(-1,-1),criteria)
+
     center_point_right = corners_right[0].ravel()
     center_point_left = corners_left[0].ravel()
 
@@ -187,7 +190,7 @@ vis = np.concatenate((frame_left, frame_right), axis=1) # mix
 # Show the frames
 cv2.imshow("frame left", frame_left)
 cv2.imshow("frame right", frame_right)
-cv2.imshow("vis" + fname, vis)
+cv2.imshow("vis SubPix" + fname, vis)
 
 
 # Hit "q" to close the window
