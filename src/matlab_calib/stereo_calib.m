@@ -68,8 +68,14 @@ displayErrors(estimationErrors, stereoParams);
 % You can use the calibration data to rectify stereo images.
 I2 = imread(imageFileNames2{1});
 [J1, J2] = rectifyStereoImages(I1, I2, stereoParams);
-imshow(J1)
-imshow(J2)
+cat_j = cat(2,J1,J2);
+figure; imshow(cat_j);
+
+cat_j_size = size(cat_j);
+gap = 27;
+for i = gap:gap:cat_j_size(1)
+    figure(3);line([0 cat_j_size(2),], [i i]);
+end
 
 % See additional examples of how to use the calibration data.  At the prompt type:
 % showdemo('StereoCalibrationAndSceneReconstructionExample')
