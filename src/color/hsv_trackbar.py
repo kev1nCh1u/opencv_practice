@@ -47,7 +47,7 @@ cv2.createTrackbar('high V', 'controls', 255, 255, callback)
 while(1):
     # read source image
     # img = cv2.imread("img\smarties.png")
-    img = cv2.imread("img/stereo_calibration/ball/1/left01.jpg")
+    img = cv2.imread("img/stereo_calibration/ball/1/01.jpg")
     # ret, img = cap.read()
     
     # convert sourece image to HSC color mode

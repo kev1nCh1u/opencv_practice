@@ -20,7 +20,7 @@ def Threshold_Demo(val):
     cv.imshow(window_name, dst)
 
 # input image
-src = cv.imread("img/ir_led.bmp")
+src = cv.imread("img/ir/Pic_2021_10_07_120311_1.bmp")
 cv.imshow("input", src)
 cv.waitKey(0)
 
