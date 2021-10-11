@@ -5,12 +5,12 @@ import numpy as np
 ###################################################################################
 # define
 ###################################################################################
-capFlag = 0
+capFlag = 1
 
 ###################################################################################
 # ir_track
 ###################################################################################
-def ir_track(frame):
+def ir_track(frame, capFlag):
 	cv2.imshow('original frame',frame)
 	# cv2.waitKey(0)
 
@@ -45,12 +45,18 @@ def ir_track(frame):
 	# find center
 	###################################################################################
 	missCount = 0
+	points = np.zeros((1, 1, 2), np.int32)
+
 	for c in contours:
 		# calculate moments for each contour
 		M = cv2.moments(c)
 		if M["m00"] > 0:
 			cX = int(M["m10"] / M["m00"])
 			cY = int(M["m01"] / M["m00"])
+
+			# kevin save point
+			point = np.array([cX, cY], np.int32)
+			points[0][0] = point
 
 			# calculate x,y coordinate of center
 			cv2.circle(imgResult, (cX, cY), 2, (0, 0, 255), -1)
@@ -63,7 +69,7 @@ def ir_track(frame):
 		cv2.putText(imgResult, 'miss point' , (10,10),cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
 		cv2.imshow('imgResult xy',imgResult)
 		cv2.waitKey(0)
-	
+		return points
 	else:
 		cv2.imshow('imgResult xy',imgResult)
 		if capFlag:
@@ -72,6 +78,7 @@ def ir_track(frame):
 			cv2.waitKey(0)
 			cv2.destroyAllWindows()
 			exit()
+		return points
 
 ###################################################################################
 # main
@@ -92,7 +99,8 @@ def main():
 
 		if ret == True:
 			# print('cap get frame')
-			ir_track(frame)
+			points = ir_track(frame, capFlag)
+			print(points[0][0])
 		else:
 			print('error no cap frame')
 			cv2.destroyAllWindows()

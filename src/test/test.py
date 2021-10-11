@@ -1,19 +1,23 @@
 import numpy as np
 import glob
+import math
+from matplotlib import pyplot as plt
+
 
 qq = np.transpose(np.array([
-                    [0, 1, 2],
-                    [3, 4, 5],
-                    [6, 7, 8],
+                    [[0, 1, 2]],
+                    [[3, 4, 5]],
+                    [[6, 7, 8]],
                      ]))
-
 print(qq)
-print(type(qq))
 
-imageSize = np.array([480	,640])[::-1]
-print(imageSize)
+print(np.reshape(qq, (3,-1)))
 
+print(np.reshape(qq, (3,-1))[:,1])
 
-path = "img/stereo_calibration/new/"
-imagesLeft = glob.glob(path + '1/*.jpg')
-print(imagesLeft)
+x = [1, 10]
+y = [1, 10]
+plt.plot(x,y, 'o', markersize=2)
+plt.xlim([0, 640])
+plt.ylim([480, 0])
+plt.show()
