@@ -3,6 +3,11 @@ import numpy as np
 
 
 ###################################################################################
+# define
+###################################################################################
+capFlag = 0
+
+###################################################################################
 # ir_track
 ###################################################################################
 def ir_track(frame):
@@ -61,32 +66,37 @@ def ir_track(frame):
 	
 	else:
 		cv2.imshow('imgResult xy',imgResult)
-		cv2.waitKey(1)
-	# cv2.destroyAllWindows()
+		if capFlag:
+			cv2.waitKey(1)
+		if not capFlag:
+			cv2.waitKey(0)
+			cv2.destroyAllWindows()
+			exit()
 
 ###################################################################################
 # main
 ###################################################################################
 def main():
 
-	# cap = cv2.VideoCapture(0)
-	cap = cv2.VideoCapture('/home/kevin/MVviewer/videos/A5031CU815_4H05A85PAK641B0/Video_2021_10_08_165027_10.avi')
+	if capFlag:
+		# cap = cv2.VideoCapture(0)
+		cap = cv2.VideoCapture('/home/kevin/MVviewer/videos/A5031CU815_4H05A85PAK641B0/Video_2021_10_08_165027_10.avi')
 
 	while 1:
-		ret, frame = cap.read()
+		if capFlag:
+			ret, frame = cap.read()
 
-		# frame = cv2.imread("img/ir/Pic_2021_10_09_104654_1.bmp")
-		# ret = True
+		if not capFlag:
+			frame = cv2.imread("img/ir/Pic_2021_10_09_104654_1.bmp")
+			ret = True
 
 		if ret == True:
 			# print('cap get frame')
 			ir_track(frame)
 		else:
-			print('error cap no frame')
+			print('error no cap frame')
+			cv2.destroyAllWindows()
 			exit()
-
-		
-
 		
 
 if __name__ == '__main__':
