@@ -4,13 +4,18 @@ import numpy as np
 import math
 import pandas as pd
 from matplotlib import pyplot as plt
+import glob
 
 ###################################################################################
 # define
 ###################################################################################
 capFlag = 1
+videoPath = '/home/kevin/MVviewer/videos/A5031CU815_4H05A85PAK641B0/*.avi'
 imagePath = "img/ir/Pic_2021_10_09_104654_1.bmp"
-videoPath = '/home/kevin/MVviewer/videos/A5031CU815_4H05A85PAK641B0/Video_2021_10_08_164744_1.avi'
+if capFlag:
+    globFilePath = videoPath
+else:
+    globFilePath = imagePath
 
 ###################################################################################
 # point path
@@ -29,8 +34,8 @@ class PointPath:
         self.minFlag = False
         self.maxFlag = False
         self.findMinMaxFlag = True # False
-        self.saveDataPath = "data/point_path_data_" + str(self.fileName) + ".csv"
-        self.savePlotPath = 'img/result/plot/' + 'point_path_plot_' + str(self.fileName) + '.png'
+        self.saveDataPath = "data/point_path/point_path_data_" + self.fileName + ".csv"
+        self.savePlotPath = 'img/result/point_path_plot/point_path_plot_' + self.fileName + '.png'
 
     def findMinMax(self, point):
         if point[0] < self.minPoint:
@@ -55,7 +60,7 @@ class PointPath:
         if self.findMinMaxFlag and not self.saveFlag:
             if point[0] == self.minPoint:
                 self.saveFlag = True
-                print('start save...')
+                print('start save...', self.minPoint, '~', self.maxPoint)
         
         if self.saveFlag == True:
             self.points[self.num][0] = point
@@ -69,8 +74,9 @@ class PointPath:
                 # np.savetxt(self.saveDataPath, pointsReshape, delimiter=",")
                 pd.DataFrame(pointsReshape).to_csv(self.saveDataPath)
                 print('Save data file to:', self.saveDataPath)
-
-                plt.title('Points')
+                
+                plt.clf()
+                plt.title('Points' + self.fileName)
                 plt.xlabel('x axis')
                 plt.ylabel('y axis')
                 plt.plot(pointsReshape[:,0],pointsReshape[:,1], 'o', markersize=1)
@@ -78,42 +84,53 @@ class PointPath:
                 plt.ylim([480, 0])
                 plt.savefig(self.savePlotPath)
                 print('Save plot image to:', self.savePlotPath)
-                plt.show()
+                plt.show(False)
+                plt.pause(1)
+                # plt.close()
 
-                exit()
-
-        return self.minPoint, self.maxPoint
+                return True
+                
 
 ###################################################################################
 # main
 ###################################################################################
 def main():
-    if capFlag:
-        # cap = cv2.VideoCapture(0)
-        cap = cv2.VideoCapture(videoPath)
 
-    # fileNum = "{0:0=2d}".format(int(videoPath[-5]))
-    fileNum = videoPath[-5]
-    PointPath1 = PointPath(fileNum)
-    print('file:', fileNum)
 
-    while 1:
+    for file in sorted(glob.glob(globFilePath)):
+
+        print('\n=========================================')
+
         if capFlag:
-            ret, frame = cap.read()
+            # cap = cv2.VideoCapture(0)
+            cap = cv2.VideoCapture(file)
 
-        if not capFlag:
-            frame = cv2.imread(imagePath)
-            ret = True
+        # fileNum = "{0:0=2d}".format(int(file[-5]))
+        fileNum = file[-6:-4]
+        print('file:', fileNum)
+        PointPath1 = PointPath(fileNum)
 
-        if ret == True:
-            # print('cap get frame')
-            points = ir_track.ir_track(frame, capFlag)
-            # print(points[0][0])
-            print('Now',points[0][0], 'MinMax',PointPath1.savePoint(points[0][0]), end='\r')
-        else:
-            print('error no cap frame')
-            cv2.destroyAllWindows()
-            exit()
+        while 1:
+            if capFlag:
+                ret, frame = cap.read()
+
+            if not capFlag:
+                frame = cv2.imread(file)
+                ret = True
+
+            if ret == True:
+                # print('cap get frame')
+                points = ir_track.ir_track(frame, capFlag)
+                # print(points[0][0])
+                print('Now',points[0][0], end='\r')
+                flag = PointPath1.savePoint(points[0][0])
+                if flag:
+                    # cv2.destroyAllWindows()
+                    break
+            else:
+                print('error no cap frame')
+                cv2.destroyAllWindows()
+                exit()
 		
 
 if __name__ == '__main__':
