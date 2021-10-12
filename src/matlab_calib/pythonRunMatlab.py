@@ -12,5 +12,5 @@ print('Change Current Directory To:', os.path.abspath(os.getcwd()))
 
 import matlab.engine
 eng = matlab.engine.start_matlab()
-eng.testqq(nargout=0) # test.m
+eng.test(nargout=0) # test.m
 eng.quit()
