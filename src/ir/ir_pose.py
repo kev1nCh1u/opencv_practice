@@ -13,14 +13,14 @@ print('\n opencv version:', cv2.__version__)
 if 0:
     cap = cv2.VideoCapture(0)
 else:
-    path = "img/"
+    path = "img/ir/"
     fname = "ir_led_4.bmp"
     cap = cv2.imread(path + fname)
 
 ########################################################################################
 # load calibration file
 ########################################################################################
-with open("calibration_matrix.yaml", "r") as f:
+with open("param/calibration_matrix.yaml", "r") as f:
     data = yaml.safe_load(f)
 
 mtx = data['camera_matrix']

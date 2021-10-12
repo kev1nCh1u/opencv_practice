@@ -8,7 +8,7 @@ print(cv2.__version__)
 ########################################################################################
 # load calibration file 
 ########################################################################################
-with open("calibration_matrix.yaml", "r") as f:
+with open("param/calibration_matrix.yaml", "r") as f:
     data = yaml.safe_load(f)
 
 mtx =  data['camera_matrix']

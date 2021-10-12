@@ -81,7 +81,7 @@ stereoMapL = cv.initUndistortRectifyMap(cameraMatrix1, distCoeffs1, rectL, projM
 stereoMapR = cv.initUndistortRectifyMap(cameraMatrix2, distCoeffs2, rectR, projMatrixR,imageSize, cv.CV_16SC2)
 
 print("Saving parameters!")
-cv_file = cv.FileStorage('stereoMap.xml', cv.FILE_STORAGE_WRITE)
+cv_file = cv.FileStorage('param/stereoMap.xml', cv.FILE_STORAGE_WRITE)
 
 stereoMapL_x = stereoMapL[0]
 stereoMapL_y = stereoMapL[1]

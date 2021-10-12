@@ -75,6 +75,6 @@ data = {'camera_matrix': np.asarray(mtx).tolist(),
 ########################################################################################
 # and save it to a file
 ########################################################################################
-print('save to calibration_matrix.yaml\n')
-with open("calibration_matrix.yaml", "w") as f:
+print('save to param/calibration_matrix.yaml\n')
+with open("param/calibration_matrix.yaml", "w") as f:
     yaml.dump(data, f)
