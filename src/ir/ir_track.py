@@ -10,7 +10,7 @@ capFlag = 1
 ###################################################################################
 # ir_track
 ###################################################################################
-def ir_track(frame, capFlag):
+def ir_track(frame, capFlag=1):
 	cv2.imshow('original frame',frame)
 	# cv2.waitKey(0)
 
