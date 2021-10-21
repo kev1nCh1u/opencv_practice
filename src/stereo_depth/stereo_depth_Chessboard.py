@@ -23,10 +23,23 @@ def find_depth(right_point, left_point, frame_right, frame_left, baseline, f):
     x_left = left_point[0]
 
     # displacement between left and right frames [pixels]
-    disparity = abs(x_left-x_right)
-    zDepth = (baseline*f_pixel)/disparity            # z depth in [mm]
+    disparity = abs(x_left - x_right)
+    zDepth = (baseline * f_pixel) / disparity            # z depth in [mm]
 
     return zDepth
+
+###############################################################################################
+# find_depth
+###############################################################################################
+def calcu_world_point(x_cam, y_cam, z_depth, focal):
+
+    # x_world = focal * x_cam / z_depth
+    # y_world = focal * y_cam / z_depth
+
+    x_world = (x_cam * z_depth) / focal
+    y_world = (y_cam * z_depth) / focal
+
+    return x_world, y_world
 
 ###############################################################################################
 # undistortRectify remap
@@ -117,11 +130,12 @@ def main():
 
         # if find point
         if ret_left and ret_right:
-            # corners_left = cv2.cornerSubPix(gray_left,corners_left,(11,11),(-1,-1),criteria)
-            # corners_right = cv2.cornerSubPix(gray_right,corners_right,(11,11),(-1,-1),criteria)
+            corners_left = cv2.cornerSubPix(gray_left,corners_left,(11,11),(-1,-1),criteria)
+            corners_right = cv2.cornerSubPix(gray_right,corners_right,(11,11),(-1,-1),criteria)
 
-            center_point_right = corners_right[0].ravel()
-            center_point_left = corners_left[0].ravel()
+            conerNum = 1
+            center_point_right = corners_right[conerNum].ravel()
+            center_point_left = corners_left[conerNum].ravel()
 
             print('center_point_right', center_point_right)
             print('center_point_left', center_point_left)
@@ -144,13 +158,23 @@ def main():
             # All formulas used to find depth is in video presentaion
             depth = find_depth(center_point_right, center_point_left,
                             frame_right, frame_left, B, f)
+            depth = round(depth, 1)
+            print("Depth:", depth)
+            text = "Dis: " + str(round(depth, 1))
+            cv2.putText(frame_right, text,
+                        (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(frame_left, text,
+                        (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-            cv2.putText(frame_right, "Dis: " + str(round(depth, 1)),
-                        (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            cv2.putText(frame_left, "Dis: " + str(round(depth, 1)),
-                        (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            # Multiply computer value with 205.8 to get real-life depth in [cm]. The factor was found manually.
-            print("Depth: ", str(round(depth, 1)))
+            x_world, y_world = calcu_world_point(center_point_left[0], center_point_left[1], depth, f)
+            x_world = round(x_world, 1)
+            y_world = round(y_world, 1)
+            print('x_world, y_world :' , x_world, y_world)
+            text = "X:" + str(round(x_world, 1)) + " Y:" + str(round(y_world, 1))
+            cv2.putText(frame_left, text,
+                        (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(frame_right, text,
+                        (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
         # fps calculate
         end = time.time()
