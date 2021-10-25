@@ -19,6 +19,10 @@
 
     ./build/stereo_match img/stereo_calibration/new/1/01.jpg img/stereo_calibration/new/2/01.jpg --algorithm=sgbm --max-disparity=32 --blocksize=1 -i=param/intrinsics.yml -e=param/extrinsics.yml
 
+## single camera point record
+    point_path.py
+    combine_data.py
+
 ## parameter
 
 f: stereoParams.CameraParameters1.FocalLength  
