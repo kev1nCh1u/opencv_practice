@@ -1,5 +1,8 @@
 % matlab_stereo_param
+fprintf('\nStart create cv yaml\n')
+
 fileName = "../../param/matlab_stereo_param.yaml";
+disp(fileName)
 
 matlab2opencv(fileName, stereoParams.CameraParameters1.IntrinsicMatrix, "IntrinsicMatrix1", "w")
 matlab2opencv(fileName, stereoParams.CameraParameters1.RadialDistortion, "RadialDistortion1", "a")
@@ -13,3 +16,7 @@ matlab2opencv(fileName, stereoParams.CameraParameters1.ImageSize, "ImageSize", "
 matlab2opencv(fileName, stereoParams.RotationOfCamera2, "RotationOfCamera2", "a")
 matlab2opencv(fileName, stereoParams.TranslationOfCamera2, "TranslationOfCamera2", "a")
 
+matlab2opencv(fileName, stereoParams.CameraParameters1.FocalLength, "FocalLength", "a")
+
+
+fprintf('Finish...\n')
